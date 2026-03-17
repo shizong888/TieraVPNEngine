@@ -1,16 +1,16 @@
 //
-// XRayTunnel.swift
-// SwiftyXrayKit
+// TieraVPNTunnel.swift
+// TieraVPNKit
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
 
 import Foundation
 import NetworkExtension
-import SwiftyXrayCore
+import TieraVPNCore
 
-/// Main Xray tunnel actor that manages the VPN tunnel connection
-public actor XRayTunnel: NSObject {
+/// Main TieraVPN tunnel actor that manages the VPN tunnel connection
+public actor TieraVPNTunnel: NSObject {
   
   public var defaultNameServers: [String] = ["8.8.8.8", "1.1.1.1"]
   
@@ -34,16 +34,16 @@ public actor XRayTunnel: NSObject {
     self.packetFlow = packetFlow
   }
   
-  /// Starts the Xray tunnel with the provided configuration
+  /// Starts the TieraVPN tunnel with the provided configuration
   /// - Parameters:
-  ///   - dataDir: Directory for Xray data files, such as geoIP.dat
+  ///   - dataDir: Directory for TieraVPN data files, such as geoIP.dat
   ///   - config: Intermediate configuration (JSON or URL)
   ///   - finalConfigPath: Path where the final JSON config will be written
   ///   - inboundSniffing: Optional sniffing configuration
-  /// - Throws: SwiftyXRayError on failure
+  /// - Throws: TieraVPNError on failure
   public func run(
     dataDir: URL,
-    config: XrayIntermediateConfig,
+    config: TieraVPNIntermediateConfig,
     finalConfigPath: URL,
     inboundSniffing: SniffingConfiguration? = nil
   ) throws {
@@ -56,12 +56,12 @@ public actor XRayTunnel: NSObject {
     case let .json(config):
       jsonIntermediate = config
     case let .url(config):
-      jsonIntermediate = try SwiftyXray.xrayShareLinkToJson(url: config)
+      jsonIntermediate = try TieraVPN.xrayShareLinkToJson(url: config)
     }
 
     guard let jsonData = jsonIntermediate.data(using: .utf8),
           var jsonConfig = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
-      throw SwiftyXRayError.invalidConfig
+      throw TieraVPNError.invalidConfig
     }
 
     jsonConfig = jsonConfig.removingNullValues()
@@ -70,7 +70,7 @@ public actor XRayTunnel: NSObject {
 
     try JSONSerialization.data(withJSONObject: jsonConfig).write(to: finalConfigPath)
 
-    try SwiftyXray.run(dataDir: dataDir.path, configPath: finalConfigPath.path)
+    try TieraVPN.run(dataDir: dataDir.path, configPath: finalConfigPath.path)
 
     isRunning = true
     read()
@@ -82,7 +82,7 @@ public actor XRayTunnel: NSObject {
 
   /// Stops the tunnel and cleans up resources
   public func stop() {
-    try? SwiftyXray.stop()
+    try? TieraVPN.stop()
     shadowTunnel?.disconnect()
     shadowTunnel = nil
     client = nil
@@ -91,7 +91,7 @@ public actor XRayTunnel: NSObject {
   
   // MARK: - Private Methods
   
-  /// Patches the Xray configuration with inbound settings
+  /// Patches the TieraVPN configuration with inbound settings
   private func patchConfig(config: [String: Any], sniffing: SniffingConfiguration?) -> [String: Any] {
     var config = config
     var inbound: [String: Any] = [
@@ -122,24 +122,24 @@ public actor XRayTunnel: NSObject {
   
   /// Sets up the SOCKS5 proxy tunnel
   private func setupSocks5() throws {
-    guard let port = try SwiftyXray.getFreePorts(1).first else {
-      throw SwiftyXRayError.portAllocationError
+    guard let port = try TieraVPN.getFreePorts(1).first else {
+      throw TieraVPNError.portAllocationError
     }
     
     let client = OutlineNewClient("endpoint: 127.0.0.1:\(port)")
     
     if let err = client?.error {
-      throw SwiftyXRayError.tunnelSetupError(err.description)
+      throw TieraVPNError.tunnelSetupError(err.description)
     }
     guard let client = client?.client else {
-      throw SwiftyXRayError.tunnelSetupError("no client returned")
+      throw TieraVPNError.tunnelSetupError("no client returned")
     }
     self.client = client
     
     let shadowTunnelResult = Tun2socksConnectOutlineTunnel(self, client, true)
     
     if let err = shadowTunnelResult?.error {
-      throw SwiftyXRayError.tunnelSetupError("failed to bind XRay: \(err.description)")
+      throw TieraVPNError.tunnelSetupError("failed to bind TieraVPN: \(err.description)")
     }
     
     if let tunnel = shadowTunnelResult?.tunnel {
@@ -178,7 +178,7 @@ public actor XRayTunnel: NSObject {
   }
 }
 
-extension XRayTunnel: Tun2socksTunWriterProtocol {
+extension TieraVPNTunnel: Tun2socksTunWriterProtocol {
   public nonisolated func close() throws {
     Task {
       await stop()

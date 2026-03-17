@@ -4,35 +4,35 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftyXrayKit",
+    name: "TieraVPNEngine",
     platforms: [
         .iOS(.v15),
         .macOS(.v13)
     ],
     products: [
       .library(
-        name: "SwiftyXrayKit",
-        targets: ["SwiftyXrayKit"]
+        name: "TieraVPNEngine",
+        targets: ["TieraVPNEngine"]
       ),
     ],
     dependencies: [
-      .package(url: "https://github.com/shizong888/SwiftyXrayCore", from: "1.1.0")
+      .package(url: "https://github.com/shizong888/TieraVPNCore", from: "1.1.0")
     ],
     targets: [
       .target(
-        name: "SwiftyXrayKit",
+        name: "TieraVPNEngine",
         dependencies: [
-          .product(name: "SwiftyXrayCore", package: "SwiftyXrayCore")
+          .product(name: "TieraVPNCore", package: "TieraVPNCore")
         ],
-        path: "Sources/SwiftyXrayKit",
+        path: "Sources/TieraVPNEngine",
         linkerSettings: [
           .linkedLibrary("resolv")
         ]
       ),
       .testTarget(
-        name: "SwiftyXrayKitTests",
-        dependencies: ["SwiftyXrayKit"],
-        path: "Tests/SwiftyXrayKitTests"
+        name: "TieraVPNEngineTests",
+        dependencies: ["TieraVPNEngine"],
+        path: "Tests/TieraVPNEngineTests"
       ),
     ]
 )

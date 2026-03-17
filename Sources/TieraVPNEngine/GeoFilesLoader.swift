@@ -1,16 +1,16 @@
 //
 //
 // GeoFilesLoader.swift
-// SwiftyXrayKit
+// TieraVPNKit
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
 import Foundation
 
-/// A utility class for downloading and managing Xray geo files (geoip.dat and geosite.dat).
+/// A utility class for downloading and managing TieraVPN geo files (geoip.dat and geosite.dat).
 ///
 /// This class handles the concurrent download of geographical IP and site database files
-/// that are required for Xray proxy functionality. It provides progress tracking and
+/// that are required for TieraVPN proxy functionality. It provides progress tracking and
 /// uses lightweight files to ensure fast VPN setup.
 public class GeoFilesLoader: @unchecked Sendable {
   /// important! Use lightweight files in order to make vpn setup fast enough

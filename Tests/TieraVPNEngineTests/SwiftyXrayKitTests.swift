@@ -1,14 +1,14 @@
 //
-// SwiftyXrayKitTests.swift
-// SwiftyXrayKit
+// TieraVPNKitTests.swift
+// TieraVPNKit
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
 
 import XCTest
-@testable import SwiftyXrayKit
+@testable import TieraVPNKit
 
-final class SwiftyXrayKitTests: XCTestCase {
+final class TieraVPNKitTests: XCTestCase {
   
   // MARK: - Model Tests
   
@@ -48,21 +48,21 @@ final class SwiftyXrayKitTests: XCTestCase {
     XCTAssertEqual(decoded, original)
   }
   
-  // MARK: - Real SwiftyXrayCore Library Tests
+  // MARK: - Real TieraVPNCore Library Tests
   
-  func testXrayVersion() throws {
-    // Test getting Xray version - this should always work as it's a basic library call
-    let version = try SwiftyXray.xrayVersion()
+  func testTieraVPNVersion() throws {
+    // Test getting TieraVPN version - this should always work as it's a basic library call
+    let version = try TieraVPN.xrayVersion()
     
     XCTAssertFalse(version.isEmpty, "Version should not be empty")
     XCTAssertTrue(version.contains("."), "Version should contain version numbers separated by dots")
     
-    print("Xray version: \(version)")
+    print("TieraVPN version: \(version)")
   }
   
   func testGetFreePorts() throws {
     // Test allocating a single free port
-    let singlePort = try SwiftyXray.getFreePorts(1)
+    let singlePort = try TieraVPN.getFreePorts(1)
     
     XCTAssertEqual(singlePort.count, 1, "Should return exactly one port")
     XCTAssertTrue(singlePort[0] > 0, "Port number should be positive")
@@ -74,7 +74,7 @@ final class SwiftyXrayKitTests: XCTestCase {
   func testGetMultipleFreePorts() throws {
     // Test allocating multiple free ports
     let portCount = 3
-    let ports = try SwiftyXray.getFreePorts(portCount)
+    let ports = try TieraVPN.getFreePorts(portCount)
     
     XCTAssertEqual(ports.count, portCount, "Should return exactly \(portCount) ports")
     
@@ -91,12 +91,12 @@ final class SwiftyXrayKitTests: XCTestCase {
     print("Allocated multiple ports: \(ports)")
   }
   
-  func testXrayShareLinkToJsonWithValidVlessUrl() throws {
+  func testTieraVPNShareLinkToJsonWithValidVlessUrl() throws {
     // Test with a typical VLESS share link (this is a common format)
     let vlessUrl = "vless://12345678-1234-1234-1234-123456789abc@example.com:443?type=tcp&security=tls&sni=example.com#TestServer"
     
     do {
-      let jsonConfig = try SwiftyXray.xrayShareLinkToJson(url: vlessUrl)
+      let jsonConfig = try TieraVPN.xrayShareLinkToJson(url: vlessUrl)
       
       XCTAssertFalse(jsonConfig.isEmpty, "JSON config should not be empty")
       
@@ -114,7 +114,7 @@ final class SwiftyXrayKitTests: XCTestCase {
     }
   }
   
-  func testXrayShareLinkToJsonWithValidVmessUrl() throws {
+  func testTieraVPNShareLinkToJsonWithValidVmessUrl() throws {
     // Test with a base64 encoded VMess URL
     let vmessConfig = """
         {
@@ -137,7 +137,7 @@ final class SwiftyXrayKitTests: XCTestCase {
     let vmessUrl = "vmess://\(base64VmessConfig)"
     
     do {
-      let jsonConfig = try SwiftyXray.xrayShareLinkToJson(url: vmessUrl)
+      let jsonConfig = try TieraVPN.xrayShareLinkToJson(url: vmessUrl)
       
       XCTAssertFalse(jsonConfig.isEmpty, "JSON config should not be empty")
       
@@ -153,16 +153,16 @@ final class SwiftyXrayKitTests: XCTestCase {
     }
   }
   
-  func testXrayShareLinkToJsonWithInvalidUrl() {
+  func testTieraVPNShareLinkToJsonWithInvalidUrl() {
     // Test with completely invalid URL
     let invalidUrl = "not-a-valid-url"
     
-    XCTAssertThrowsError(try SwiftyXray.xrayShareLinkToJson(url: invalidUrl)) { error in
-      XCTAssertTrue(error is SwiftyXRayError, "Should throw XRayError for invalid URL")
+    XCTAssertThrowsError(try TieraVPN.xrayShareLinkToJson(url: invalidUrl)) { error in
+      XCTAssertTrue(error is TieraVPNError, "Should throw TieraVPNError for invalid URL")
     }
   }
   
-  func testXrayRunAndStopLifecycle() throws {
+  func testTieraVPNRunAndStopLifecycle() throws {
     // This test requires a valid config file and data directory
     // We'll create temporary directories for testing
     
@@ -179,7 +179,7 @@ final class SwiftyXrayKitTests: XCTestCase {
     try FileManager.default.createDirectory(atPath: dataDir, withIntermediateDirectories: true)
     try FileManager.default.createDirectory(at: configDir, withIntermediateDirectories: true)
     
-    // Create a minimal valid Xray config
+    // Create a minimal valid TieraVPN config
     let minimalConfig = """
         {
             "log": {
@@ -210,22 +210,22 @@ final class SwiftyXrayKitTests: XCTestCase {
     try minimalConfig.write(toFile: configPath, atomically: true, encoding: .utf8)
     
     do {
-      // Test running Xray
-      try SwiftyXray.run(dataDir: dataDir, configPath: configPath)
-      print("Xray started successfully")
+      // Test running TieraVPN
+      try TieraVPN.run(dataDir: dataDir, configPath: configPath)
+      print("TieraVPN started successfully")
       
       // Give it a moment to start
       Thread.sleep(forTimeInterval: 0.1)
       
-      // Test stopping Xray
-      try SwiftyXray.stop()
-      print("Xray stopped successfully")
+      // Test stopping TieraVPN
+      try TieraVPN.stop()
+      print("TieraVPN stopped successfully")
       
     } catch {
-      print("Xray lifecycle test failed (this may be expected in test environment): \(error)")
+      print("TieraVPN lifecycle test failed (this may be expected in test environment): \(error)")
       
       // Try to stop anyway in case it started
-      try? SwiftyXray.stop()
+      try? TieraVPN.stop()
     }
     
     // Clean up
@@ -233,12 +233,12 @@ final class SwiftyXrayKitTests: XCTestCase {
     try? FileManager.default.removeItem(at: configDir)
   }
   
-  func testXrayRunWithInvalidConfig() {
+  func testTieraVPNRunWithInvalidConfig() {
     let invalidConfigPath = "/non/existent/config.json"
     let invalidDataDir = "/non/existent/data"
     
-    XCTAssertThrowsError(try SwiftyXray.run(dataDir: invalidDataDir, configPath: invalidConfigPath)) { error in
-      XCTAssertTrue(error is SwiftyXRayError, "Should throw XRayError for invalid config/data paths")
+    XCTAssertThrowsError(try TieraVPN.run(dataDir: invalidDataDir, configPath: invalidConfigPath)) { error in
+      XCTAssertTrue(error is TieraVPNError, "Should throw TieraVPNError for invalid config/data paths")
     }
   }
 }

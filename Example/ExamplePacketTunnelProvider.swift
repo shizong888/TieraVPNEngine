@@ -6,11 +6,11 @@
 //
 
 import NetworkExtension
-import SwiftyXrayKit
+import TieraVPNKit
 import Network
 
 // MARK: - Packet Tunnel Provider
-/// A Network Extension provider that handles VPN tunnel connections using XRay
+/// A Network Extension provider that handles VPN tunnel connections using TieraVPN
 class ExamplePacketTunnelProvider: NEPacketTunnelProvider {
   
   struct NetworkInterfaceInfo {
@@ -26,8 +26,8 @@ class ExamplePacketTunnelProvider: NEPacketTunnelProvider {
   }
   
   // MARK: - Properties
-  /// The XRay tunnel client instance that handles the actual proxy connection
-  var xrayClient: XRayTunnel?
+  /// The TieraVPN tunnel client instance that handles the actual proxy connection
+  var xrayClient: TieraVPNTunnel?
   
   // MARK: - Tunnel Lifecycle Methods
   
@@ -44,25 +44,25 @@ class ExamplePacketTunnelProvider: NEPacketTunnelProvider {
         return
       }
       
-      // Start the XRay proxy service
-      self.startXrayAndSocksProxy(completionHandler)
+      // Start the TieraVPN proxy service
+      self.startTieraVPNAndSocksProxy(completionHandler)
     }
   }
 
-  /// Initializes and starts the XRay tunnel with configuration
-  /// - Parameter completion: Optional callback to handle the result of starting XRay
-  private func startXrayAndSocksProxy(_ completion: ((Error?)->Void)? = nil) {
+  /// Initializes and starts the TieraVPN tunnel with configuration
+  /// - Parameter completion: Optional callback to handle the result of starting TieraVPN
+  private func startTieraVPNAndSocksProxy(_ completion: ((Error?)->Void)? = nil) {
     
     // Path to GeoIP database files (used for routing decisions)
     let geoIpPath = FileManager.default.documentDirectory
     
-    // Path to the XRay configuration file
+    // Path to the TieraVPN configuration file
     let configPath = FileManager.default.documentDirectory.appending(path: "config.json")
     
-    // Initialize XRay tunnel with the packet flow from Network Extension
-    xrayClient = XRayTunnel(packetFlow: packetFlow)
+    // Initialize TieraVPN tunnel with the packet flow from Network Extension
+    xrayClient = TieraVPNTunnel(packetFlow: packetFlow)
     
-    // Start XRay asynchronously
+    // Start TieraVPN asynchronously
     Task {
       do {
         // Read the configuration file content
@@ -71,7 +71,7 @@ class ExamplePacketTunnelProvider: NEPacketTunnelProvider {
         // Path where the final processed configuration will be saved
         let finalPath = FileManager.default.documentDirectory.appending(path: "config_final.json")
         
-        // Start the XRay tunnel with the configuration
+        // Start the TieraVPN tunnel with the configuration
         try await xrayClient?.run(dataDir: geoIpPath, config: .json(config), finalConfigPath: finalPath)
         
         // Notify success
@@ -97,7 +97,7 @@ class ExamplePacketTunnelProvider: NEPacketTunnelProvider {
   /// - Parameter completionHandler: Callback to indicate tunnel has been stopped
   private func stopTunnel(completionHandler: @escaping () -> Void) {
     Task {
-      // Stop the XRay client gracefully
+      // Stop the TieraVPN client gracefully
       await xrayClient?.stop()
       
       // Notify that tunnel has been stopped

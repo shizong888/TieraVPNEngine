@@ -1,14 +1,14 @@
 //
-// XrayIntermediateConfig.swift
-// XrayWrapper
+// TieraVPNIntermediateConfig.swift
+// TieraVPNWrapper
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
 
 import Foundation
 
-/// Configuration input format for Xray tunnel
-public enum XrayIntermediateConfig {
+/// Configuration input format for TieraVPN tunnel
+public enum TieraVPNIntermediateConfig {
   /// Direct JSON configuration string
   case json(String)
   

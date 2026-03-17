@@ -1,13 +1,13 @@
 //
 // SniffingConfiguration.swift
-// XrayWrapper
+// TieraVPNWrapper
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
 
 import Foundation
 
-/// Configuration for Xray traffic sniffing capabilities
+/// Configuration for TieraVPN traffic sniffing capabilities
 public struct SniffingConfiguration: Codable {
   /// Destination override protocols (e.g., "http", "tls", "quic", "fakedns")
   public let destOverride: [String]

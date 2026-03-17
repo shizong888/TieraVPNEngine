@@ -1,14 +1,14 @@
 //
 //
 // GeoFilesLoaderTests.swift
-// SwiftyXrayKitTests
+// TieraVPNKitTests
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
 
 import XCTest
 import Foundation
-@testable import SwiftyXrayKit
+@testable import TieraVPNKit
 
 @available(macOS 13.0, iOS 15.0, *)
 final class GeoFilesLoaderTests: XCTestCase {

@@ -1,6 +1,6 @@
 //
 // BytesTransferred.swift
-// XrayWrapper
+// TieraVPNWrapper
 //
 // Copyright © 2025 Dmitry Ulyanov
 //
