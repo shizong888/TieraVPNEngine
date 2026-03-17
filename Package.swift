@@ -16,13 +16,13 @@ let package = Package(
       ),
     ],
     dependencies: [
-      .package(url: "https://github.com/shizong888/TieraVPNCore", from: "1.1.0")
+      .package(url: "https://github.com/shizong888/SwiftyXrayCore", from: "1.1.0")
     ],
     targets: [
       .target(
         name: "TieraVPNEngine",
         dependencies: [
-          .product(name: "TieraVPNCore", package: "TieraVPNCore")
+          .product(name: "SwiftyXrayCore", package: "SwiftyXrayCore")
         ],
         path: "Sources/TieraVPNEngine",
         linkerSettings: [
