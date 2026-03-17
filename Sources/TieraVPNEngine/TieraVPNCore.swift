@@ -7,7 +7,7 @@
 
 import Foundation
 import Swift
-import TieraVPNCore
+import SwiftyXrayCore
 
 /// Main wrapper class for TieraVPN functionality
 public class TieraVPN {

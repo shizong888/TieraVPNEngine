@@ -7,7 +7,7 @@
 
 import Foundation
 import NetworkExtension
-import TieraVPNCore
+import SwiftyXrayCore
 
 /// Main TieraVPN tunnel actor that manages the VPN tunnel connection
 public actor TieraVPNTunnel: NSObject {
