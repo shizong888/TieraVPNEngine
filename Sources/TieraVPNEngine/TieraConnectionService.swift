@@ -10,11 +10,12 @@ import Foundation
 import NetworkExtension
 
 /// Tiera VPN connection service - provides a high-level API for establishing VPN connections
-public actor TieraConnectionService {
+@MainActor
+public class TieraConnectionService {
 
   // MARK: - Properties
 
-  nonisolated(unsafe) private let tunnel: TieraVPNTunnel
+  private let tunnel: TieraVPNTunnel
   private var connectionState: TieraConnectionState = .disconnected
   private var startTime: Date?
 
@@ -45,7 +46,7 @@ public actor TieraConnectionService {
 
   /// Initialize Tiera VPN Connection Service
   /// - Parameter packetFlow: NEPacketTunnelFlow for packet processing
-  nonisolated public init(packetFlow: NEPacketTunnelFlow) {
+  public init(packetFlow: NEPacketTunnelFlow) {
     self.tunnel = TieraVPNTunnel(packetFlow: packetFlow)
     TieraLogger.log("[TieraConnectionService] Service initialized")
   }
