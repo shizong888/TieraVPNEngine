@@ -15,7 +15,7 @@ public class TieraConnectionService {
 
   // MARK: - Properties
 
-  private let tunnel: TieraVPNTunnel
+  nonisolated(unsafe) private let tunnel: TieraVPNTunnel
   private var connectionState: TieraConnectionState = .disconnected
   private var startTime: Date?
 
