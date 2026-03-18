@@ -45,7 +45,7 @@ public actor TieraVPNTunnel: NSObject {
     dataDir: URL,
     config: TieraVPNIntermediateConfig,
     finalConfigPath: URL,
-    inboundSniffing: SniffingConfiguration? = nil
+    inboundSniffing: TieraSniffingConfig? = nil
   ) throws {
     guard isRunning == false else { return }
 
@@ -92,7 +92,7 @@ public actor TieraVPNTunnel: NSObject {
   // MARK: - Private Methods
   
   /// Patches the TieraVPN configuration with inbound settings
-  private func patchConfig(config: [String: Any], sniffing: SniffingConfiguration?) -> [String: Any] {
+  private func patchConfig(config: [String: Any], sniffing: TieraSniffingConfig?) -> [String: Any] {
     var config = config
     var inbound: [String: Any] = [
       "listen": "127.0.0.1",

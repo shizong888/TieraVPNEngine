@@ -16,7 +16,7 @@ public class TieraVPN {
   /// - Returns: Array of allocated port numbers
   /// - Throws: TieraVPNError if port allocation fails
   public static func getFreePorts(_ count: Int) throws -> [Int] {
-    let base64JsonResponse = LibTieraVPNGetFreePorts(count)
+    let base64JsonResponse = LibSwiftyXRayGetFreePorts(count)
     let portsResponse = try TieraVPNPortsResponse(base64String: base64JsonResponse)
     if let ports = portsResponse.data?.ports {
       return ports
@@ -34,7 +34,7 @@ public class TieraVPN {
   /// - Throws: TieraVPNError if TieraVPN fails to start
   public static func run(dataDir: String, configPath: String) throws {
     let jsonRequest = try JSONEncoder().encode(TieraVPNRunRequest(datDir: dataDir, configPath: configPath))
-    let base64JsonResponse = LibTieraVPNRunTieraVPN(jsonRequest.base64EncodedString())
+    let base64JsonResponse = LibSwiftyXRayRunXRay(jsonRequest.base64EncodedString())
     
     let runResponse = try TieraVPNBoolResponse(base64String: base64JsonResponse)
     if !runResponse.success {
@@ -45,7 +45,7 @@ public class TieraVPN {
   /// Stops the running TieraVPN instance
   /// - Throws: TieraVPNError if stopping fails
   public static func stop() throws {
-    let base64JsonResponse = LibTieraVPNStopTieraVPN()
+    let base64JsonResponse = LibSwiftyXRayStopXRay()
     let runResponse = try TieraVPNBoolResponse(base64String: base64JsonResponse)
     if !runResponse.success {
       throw TieraVPNError.invalidResponse(base64JsonResponse)
@@ -56,7 +56,7 @@ public class TieraVPN {
   /// - Returns: Version string
   /// - Throws: TieraVPNError if version retrieval fails
   public static func xrayVersion() throws -> String {
-    let base64JsonResponse = LibTieraVPNTieraVPNVersion()
+    let base64JsonResponse = LibSwiftyXRayXRayVersion()
     let runResponse = try TieraVPNVersionResponse(base64String: base64JsonResponse)
     guard let version = runResponse.data else {
       throw TieraVPNError.invalidResponse(base64JsonResponse)
@@ -74,7 +74,7 @@ public class TieraVPN {
   /// - Returns: JSON configuration string
   /// - Throws: TieraVPNError if conversion fails
   public static func xrayShareLinkToJson(url: String) throws -> String {
-    let base64JsonResponse = LibTieraVPNConvertShareLinksToTieraVPNJson(Data(url.utf8).base64EncodedString())
+    let base64JsonResponse = LibSwiftyXRayConvertShareLinksToXRayJson(Data(url.utf8).base64EncodedString())
     
     guard let jsonResponse = base64JsonResponse.fromBase64(),
           let respData = jsonResponse.data(using: .utf8) else {
