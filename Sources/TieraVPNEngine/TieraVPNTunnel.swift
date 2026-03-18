@@ -9,8 +9,9 @@ import Foundation
 import NetworkExtension
 import SwiftyXrayCore
 
-/// Main TieraVPN tunnel actor that manages the VPN tunnel connection
-public actor TieraVPNTunnel: NSObject {
+/// Main TieraVPN tunnel class that manages the VPN tunnel connection
+@MainActor
+public class TieraVPNTunnel: NSObject {
   
   public var defaultNameServers: [String] = ["8.8.8.8", "1.1.1.1"]
   
