@@ -8,7 +8,7 @@
 import Foundation
 
 /// Configuration input format for TieraVPN tunnel
-public enum TieraVPNIntermediateConfig {
+public enum TieraVPNIntermediateConfig: Sendable {
   /// Direct JSON configuration string
   case json(String)
   

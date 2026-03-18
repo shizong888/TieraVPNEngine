@@ -8,7 +8,7 @@
 import Foundation
 
 /// Configuration for TieraVPN traffic sniffing capabilities
-public struct TieraSniffingConfig: Codable {
+public struct TieraSniffingConfig: Codable, Sendable {
   /// Destination override protocols (e.g., "http", "tls", "quic", "fakedns")
   public let destOverride: [String]
   
