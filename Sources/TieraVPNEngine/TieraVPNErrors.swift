@@ -8,7 +8,7 @@
 import Foundation
 
 /// Errors that can occur during Tiera VPN Engine operations
-public enum TieraVPNError: Error, LocalizedError {
+public enum TieraVPNError: Error, LocalizedError, Equatable {
   /// Invalid response received from Tiera VPN Engine
   case invalidResponse(String)
 

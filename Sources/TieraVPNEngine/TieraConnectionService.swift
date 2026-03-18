@@ -119,7 +119,7 @@ public actor TieraConnectionService {
 // MARK: - Supporting Types
 
 /// Tiera VPN connection state
-public enum TieraConnectionState {
+public enum TieraConnectionState: Equatable {
   case disconnected
   case connecting
   case connected
