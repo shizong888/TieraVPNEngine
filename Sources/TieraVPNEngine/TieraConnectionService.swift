@@ -45,7 +45,7 @@ public actor TieraConnectionService {
 
   /// Initialize Tiera VPN Connection Service
   /// - Parameter packetFlow: NEPacketTunnelFlow for packet processing
-  public init(packetFlow: NEPacketTunnelFlow) {
+  nonisolated public init(packetFlow: NEPacketTunnelFlow) {
     self.tunnel = TieraVPNTunnel(packetFlow: packetFlow)
     TieraLogger.log("[TieraConnectionService] Service initialized")
   }
