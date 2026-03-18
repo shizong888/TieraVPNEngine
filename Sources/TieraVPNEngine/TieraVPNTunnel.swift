@@ -21,16 +21,16 @@ public actor TieraVPNTunnel: NSObject {
   var isRunning = false
   
   /// Weak reference to the packet flow for reading/writing packets
-  weak var packetFlow: NEPacketTunnelFlow?
-  
+  nonisolated(unsafe) weak var packetFlow: NEPacketTunnelFlow?
+
   // Private properties for tunnel management
   private var client: OutlineClient?
   private var shadowTunnel: Tun2socksTunnelProtocol?
   private var socks5Port: Int = 0
-  
+
   /// Initializes the tunnel with a packet flow
   /// - Parameter packetFlow: The NEPacketTunnelFlow for packet processing
-  public init(packetFlow: NEPacketTunnelFlow) {
+  nonisolated public init(packetFlow: NEPacketTunnelFlow) {
     self.packetFlow = packetFlow
   }
   
